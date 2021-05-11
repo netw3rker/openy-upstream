@@ -1,0 +1,16 @@
+***************
+*** 230,235 ****
+      $config
+        ->set('admin_css', $form_state->getValue('admin_css'))
+        ->set('fx', $form_state->getValue('fx'))
+        ->set('noscript', $form_state->getValue('noscript'))
+        ->set('responsive_image', $form_state->getValue('responsive_image'))
+        ->set('one_pixel', $form_state->getValue('one_pixel'))
+--- 237,243 ----
+      $config
+        ->set('admin_css', $form_state->getValue('admin_css'))
+        ->set('fx', $form_state->getValue('fx'))
++       ->set('native', $form_state->getValue('native'))
+        ->set('noscript', $form_state->getValue('noscript'))
+        ->set('responsive_image', $form_state->getValue('responsive_image'))
+        ->set('one_pixel', $form_state->getValue('one_pixel'))

@@ -1,0 +1,19 @@
+***************
+*** 269,275 ****
+  
+      // Support browser native lazy loading as per 8/2019 specific to Chrome 76+.
+      // See https://web.dev/native-lazy-loading/
+-     $attributes['loading'] = 'lazy';
+    }
+  
+    /**
+--- 269,277 ----
+  
+      // Support browser native lazy loading as per 8/2019 specific to Chrome 76+.
+      // See https://web.dev/native-lazy-loading/
++     if (!empty($settings['native'])) {
++       $attributes['loading'] = 'lazy';
++     }
+    }
+  
+    /**

@@ -1,0 +1,69 @@
+***************
+*** 5,19 ****
+   * Install, uninstall and update hooks for Media entity video module.
+   */
+  
+  /**
+   * Implements hook_install().
+   */
+  function media_entity_video_install() {
+    $source = drupal_get_path('module', 'media_entity_video') . '/images/icons';
+    $destination = \Drupal::config('media.settings')->get('icon_base_uri');
+-   file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+  
+-   $files = file_scan_directory($source, '/.*\.(svg|png|jpg|jpeg|gif)$/');
+    foreach ($files as $file) {
+      // When reinstalling we don't want to copy the icons when
+      // they already exist. The icons could be replaced (by a contrib module or
+--- 5,21 ----
+   * Install, uninstall and update hooks for Media entity video module.
+   */
+  
++ use Drupal\Core\File\FileSystemInterface;
++ 
+  /**
+   * Implements hook_install().
+   */
+  function media_entity_video_install() {
+    $source = drupal_get_path('module', 'media_entity_video') . '/images/icons';
+    $destination = \Drupal::config('media.settings')->get('icon_base_uri');
++   \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+  
++   $files = \Drupal::service('file_system')->scanDirectory($source, '/.*\.(svg|png|jpg|jpeg|gif)$/');
+    foreach ($files as $file) {
+      // When reinstalling we don't want to copy the icons when
+      // they already exist. The icons could be replaced (by a contrib module or
+***************
+*** 22,28 ****
+      // referenced somewhere else. Since showing an error that it was not
+      // possible to copy the files is also confusing, we silently do nothing.
+      if (!file_exists($destination . DIRECTORY_SEPARATOR . $file->filename)) {
+-       file_unmanaged_copy($file->uri, $destination, FILE_EXISTS_ERROR);
+      }
+    }
+  }
+--- 24,30 ----
+      // referenced somewhere else. Since showing an error that it was not
+      // possible to copy the files is also confusing, we silently do nothing.
+      if (!file_exists($destination . DIRECTORY_SEPARATOR . $file->filename)) {
++       \Drupal::service('file_system')->copy($file->uri, $destination, FileSystemInterface::EXISTS_ERROR);
+      }
+    }
+  }
+***************
+*** 34,40 ****
+    $requirements = [];
+    if ($phase == 'install') {
+      $destination = \Drupal::config('media.settings')->get('icon_base_uri');
+-     file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+      $is_writable = is_writable($destination);
+      $is_directory = is_dir($destination);
+      if (!$is_writable || !$is_directory) {
+--- 36,42 ----
+    $requirements = [];
+    if ($phase == 'install') {
+      $destination = \Drupal::config('media.settings')->get('icon_base_uri');
++     \Drupal::service('file_system')->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+      $is_writable = is_writable($destination);
+      $is_directory = is_dir($destination);
+      if (!$is_writable || !$is_directory) {

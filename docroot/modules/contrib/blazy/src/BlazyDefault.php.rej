@@ -1,0 +1,16 @@
+***************
+*** 204,209 ****
+    public static function uiSettings() {
+      return [
+        'one_pixel'        => TRUE,
+        'noscript'         => FALSE,
+        'placeholder'      => '',
+        'responsive_image' => FALSE,
+--- 204,210 ----
+    public static function uiSettings() {
+      return [
+        'one_pixel'        => TRUE,
++       'native'           => FALSE,
+        'noscript'         => FALSE,
+        'placeholder'      => '',
+        'responsive_image' => FALSE,
